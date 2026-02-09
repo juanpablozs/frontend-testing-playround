@@ -14,6 +14,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/lib/test-setup.ts'],
     css: true,
+    include: ['tests/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -24,6 +25,8 @@ export default defineConfig({
         '**/*.config.*',
         '**/mockData',
         'tests/',
+        'e2e/',
+        'dist/',
       ],
     },
   },

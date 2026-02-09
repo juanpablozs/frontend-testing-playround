@@ -75,7 +75,7 @@ export function PaymentStep() {
           error={touched.cardNumber ? errors.cardNumber : undefined}
           maxLength={16}
           placeholder="1234567812345678"
-          autoComplete="cc-number"
+          autoComplete="off"
         />
 
         <Input
@@ -85,7 +85,7 @@ export function PaymentStep() {
           onChange={(e) => handleChange('cardName', e.target.value)}
           onBlur={() => handleBlur('cardName')}
           error={touched.cardName ? errors.cardName : undefined}
-          autoComplete="cc-name"
+          autoComplete="name"
         />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -100,7 +100,7 @@ export function PaymentStep() {
             error={touched.expiryDate ? errors.expiryDate : undefined}
             placeholder="MM/YY"
             maxLength={5}
-            autoComplete="cc-exp"
+            autoComplete="off"
           />
 
           <Input
@@ -113,7 +113,7 @@ export function PaymentStep() {
             onBlur={() => handleBlur('cvv')}
             error={touched.cvv ? errors.cvv : undefined}
             maxLength={4}
-            autoComplete="cc-csc"
+            autoComplete="off"
           />
         </div>
 

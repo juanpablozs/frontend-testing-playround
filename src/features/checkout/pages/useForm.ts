@@ -17,26 +17,17 @@ export function useForm<T extends Record<string, unknown>>({
   const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({})
 
   const handleChange = (field: keyof T, value: unknown) => {
-    setValues((prev) => ({ ...prev, [field]: value }))
+    const newValues = { ...values, [field]: value }
+    setValues(newValues)
     
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
-    }
+    // Validate immediately on change  
+    validateField(field, newValues)
   }
 
-  const handleBlur = (field: keyof T) => {
-    setTouched((prev) => ({ ...prev, [field]: true }))
-    validateField(field)
-  }
-
-  const validateField = (field: keyof T) => {
+  const validateField = (field: keyof T, valuesToValidate = values) => {
     try {
-      schema.parse(values)
+      schema.parse(valuesToValidate)
+      // Field is valid, clear error
       setErrors((prev) => {
         const newErrors = { ...prev }
         delete newErrors[field]
@@ -50,9 +41,21 @@ export function useForm<T extends Record<string, unknown>>({
             ...prev,
             [field]: fieldError.message,
           }))
+        } else {
+          // No error for this specific field, clear it
+          setErrors((prev) => {
+            const newErrors = { ...prev }
+            delete newErrors[field]
+            return newErrors
+          })
         }
       }
     }
+  }
+
+  const handleBlur = (field: keyof T) => {
+    // Only mark as touched, don't validate here
+    setTouched((prev) => ({ ...prev, [field]: true }))
   }
 
   const validateAll = (): boolean => {
